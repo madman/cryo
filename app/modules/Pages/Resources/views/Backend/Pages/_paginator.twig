@@ -1,0 +1,25 @@
+{# paginator #}
+{% if pagesNumber > 1 %}
+    {% if (sortBy is defined) %}
+        {% set paginatorUrl = paginatorUrl~'&sort='~sortBy %}
+    {% endif %}
+    {% if (sortOrder is defined) %}
+        {% set paginatorUrl = paginatorUrl~'&order='~sortOrder %}
+    {% endif %}
+
+    <ul class="pagination">
+        <li {% if (currentPage==1) %}class="disabled"{% endif %}>
+            <a href="{{ paginatorUrl | replace({'%page%':1}) }}">&laquo;</a>
+        </li>
+
+        {% for i in 1..pagesNumber %}
+            <li {% if (currentPage==i) %}class="active"{% endif %}>
+                <a href="{{ paginatorUrl | replace({'%page%':i}) }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+        <li {% if (currentPage==pagesNumber) %}class="disabled"{% endif %}>
+            <a href="{{ paginatorUrl | replace({'%page%':pagesNumber}) }}">&raquo;</a>
+        </li>
+    </ul>
+
+{% endif %}

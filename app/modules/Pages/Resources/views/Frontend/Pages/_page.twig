@@ -1,0 +1,15 @@
+{% extends "base.twig" %}
+{% block title %}
+    <title>{{ page.getTitle }}</title>
+{% endblock %}
+    {% block description %}
+        <meta name="description" content="{{ page.getDescription }}">
+    {% endblock %}
+    {% block keywords %}
+        <meta name="keywords" content="{{ page.getKeywords }}">
+    {% endblock %}
+
+{% block content %}
+
+    {{ page.getContent | remove_dangerous_content | raw }}
+{% endblock %}

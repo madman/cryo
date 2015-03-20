@@ -1,0 +1,20 @@
+{% extends "base.twig" %}
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="{{ path('users/profile') }}">{{ 'Профиль'|trans }}</a></li>
+        <li><a href="{{ path('users/subscriptions') }}">{{ 'Настройка уведомлений'|trans }}</a></li>
+        <li><a href="{{ path('users/phone') }}">{{ 'Верификация телефона'|trans }}</a></li>
+    </ol>
+
+    <h1>{{ 'Профиль игрока'|trans }}</h1>
+    <form action="" method="post" class="form-horizontal">
+        {{ form_widget(form) }}
+        <div class="form-group">
+
+            <div class="col-lg-1 col-lg-offset-2">
+                <input type="submit" class="btn btn-primary" name="submit" value="{{ 'Сохранить'|trans }}">
+            </div>
+        </div>
+    </form>
+{% endblock %}

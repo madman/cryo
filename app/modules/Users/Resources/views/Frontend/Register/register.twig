@@ -1,0 +1,27 @@
+{% extends "base.twig" %}
+
+{% block content %}
+    <h3>{{ 'Регистрация'|trans }}</h3>
+
+    <form action="{{ url('users/register') }}" method="post" class="form-horizontal">
+        {{ form_widget(form) }}
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">{{ 'Регистрация'|trans }}</button>
+        </div>
+    </div>
+    </form>
+{% endblock %}
+
+{% block footer_javascript %}
+    {{ parent() }}
+        <script src="/assets/app/frontend/js/lib/app.js"></script>
+        <script src="/assets/app/frontend/js/lib/jquery.storageapi.min.js"></script>
+        <script src="/assets/app/frontend/js/common/gift_at_registry.js"></script>
+        <script type="text/javascript">
+            app.runFragments(['gift_at_registry']);
+        </script>
+{% endblock %}
+
+

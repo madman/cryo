@@ -1,0 +1,23 @@
+{% extends "base.twig" %}
+
+{% block content %}
+    <div class="message">
+        {% if app.session.getFlashBag.get('password-has-been-changed') %}
+            {{ 'Новый пароль успешно сохранен.'|trans }}
+        {% endif %}
+    </div>
+
+    <form action="{{ path('users_secured') }}" method="post">
+        <div class="error">{{ error }}</div>
+
+        <label>{{ 'Email'|trans }}: <input type="text" name="_username" value="{{ last_username }}"/></label>
+        <label>{{ 'Пароль'|trans }}: <input type="password" name="_password" value=""/></label>
+
+        <input type="submit" value="{{ 'Войти'|trans }}"/>
+    </form>
+
+    <hr>
+
+    {{ render_globologin_widget() }}
+
+{% endblock %}

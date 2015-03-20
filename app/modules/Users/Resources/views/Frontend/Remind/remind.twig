@@ -1,0 +1,15 @@
+{% extends "base.twig" %}
+
+{% block content %}
+    <div class="message">
+        {% if app.session.getFlashBag.get('email-has-been-sent') %}
+            {{ 'Спасибо. Ссылка на восстановление пароля отправлена вам на почту.'|trans }}
+        {% endif %}
+    </div>
+
+    <form action="{{ url('users/remind') }}" method="post">
+        {{ form_widget(form) }}
+
+        <input type="submit" name="submit" value="{{ 'Напомнить'|trans }}"/>
+    </form>
+{% endblock %}

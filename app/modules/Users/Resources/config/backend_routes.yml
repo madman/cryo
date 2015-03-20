@@ -1,0 +1,7 @@
+routes:
+    "Users\\Controller\\Backend\\UserController":
+        options:
+            prefix: "/admin/users"
+            module: "admin/users"
+        index: ""
+        view: "/view/{id}"

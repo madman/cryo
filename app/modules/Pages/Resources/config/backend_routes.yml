@@ -1,0 +1,26 @@
+routes:
+  "\\Pages\\Controller\\Backend\\StaticPagesController":
+    options:
+      prefix: '/admin/pages'
+      module: 'admin/pages'
+    index: ""
+    edit: "/edit/{id}"
+    create: "/create"
+
+  "\\Pages\\Controller\\Backend\\ActionsController":
+    options:
+      prefix: '/admin/actions'
+      module: 'admin/actions'
+    index: ""
+    edit: "/edit/{id}"
+    create: "/create"
+    manage: "/manage"
+
+  "\\Pages\\Controller\\Backend\\NewsController":
+    options:
+      prefix: '/admin/news'
+      module: 'admin/news'
+    index: ""
+    edit: "/edit/{id}"
+    create: "/create"
+    manage: "/manage"

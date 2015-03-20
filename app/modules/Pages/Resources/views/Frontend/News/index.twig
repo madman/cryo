@@ -1,0 +1,28 @@
+{% extends '@Pages/views/Frontend/Pages/_index.twig' %}
+
+{% block content %}
+    {% set paginatorUrl=path(app.request.attributes.get('_route'))~'?p=%page%' %}
+    <div class="table col-xs-offset-1 col-xs-2 ">
+
+        {% if (pages is iterable) and (pages.count > 0) %}
+            {% for page in pages %}
+                <div class="row show-grid">
+
+                    <div class="news-image col-xs-1">
+                        <a href="{{ path('pages/news/page', {slug: page.getSlug }) }}">
+                            {% if  page.getImage %}
+                                <img src="{{ constant('CORE_UPLOADS_URL')~'/news/'~ page.getImage }}"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="news-short-description col-xs-1">
+                        {{ page.getShortContent | raw }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% include '@Pages/views/Backend/Pages/_paginator.twig' %}
+    </div>
+
+{% endblock content %}
+

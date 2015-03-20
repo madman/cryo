@@ -1,0 +1,51 @@
+{% extends "@Admin/views/layouts/base.twig" %}
+{% block containerClass %}edit-page-page{% endblock %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    <link href="/assets/services/redactor/css/redactor.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            {% block head_edit_page %}
+                <h4 class="panel-title pull-left"
+                    style="padding-top: 7.5px;">{% if ( app.request.attributes.get('_route') | slice(-4) == 'edit') %} {{ 'Редактирование страницы'|trans }}{% else %}{{ 'Создание страницы'|trans }}{% endif %}</h4>
+            {% endblock head_edit_page %}
+
+
+            <div class="btn-group pull-right">
+                <a href="javascript:history.back(-1)" class="btn btn-default btn-sm">← {{ 'Назад'|trans }}</a>
+            </div>
+        </div>
+
+        <br>
+
+        <form action="" method="post" class="form-horizontal" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+            <div class="form-group">
+
+                <div class="col-lg-1 col-lg-offset-2">
+                    <input type="submit" class="btn btn-primary" name="submit" value="{{ 'Сохранить'|trans }}">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer_javascript %}
+
+    {{ parent() }}
+    <script src="/assets/services/redactor/js/redactor.min.js"></script>
+    <script type="text/javascript">
+        function initRedactor(selector) {
+            $(selector).redactor({
+                minHeight: 200,
+                convertDivs: false
+            });
+        }
+    </script>
+
+{% endblock %}
+

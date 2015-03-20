@@ -1,0 +1,76 @@
+{% extends '@Pages/views/Backend/Pages/_index.twig' %}
+{% block page_head_title %}{{ 'Все акции'|trans }}{% endblock %}
+
+{################################################}
+
+{% block page_list_table_head %}
+    {% set n = 'Название'|trans %}
+    {% set created_at_const = 'Создан'|trans %}
+
+    <tr>
+        <th>
+            {{ sortable_table_head(baseUrl, sortBy,  sortOrder, 'name', n) }}
+        </th>
+        <th>{{ 'Slug'|trans }}</th>
+        <th>
+            {{ sortable_table_head(baseUrl, sortBy,  sortOrder, 'created_at', created_at_const) }}
+        </th>
+        <th>
+            {{ 'Активная?'|trans }}
+        </th>
+        <th>
+        </th>
+    </tr>
+{% endblock page_list_table_head %}
+
+{################################################}
+
+{% block page_list_table_row %}
+
+    <tr>
+        <td><a href="{{ path('admin/actions/edit', {id: page.getId}) }}">
+                {{ page.getName | highlight(searchQuery) | raw }}
+            </a></td>
+        <td>
+            <span class="page-slug action-slug" {% if (page.getIsActive == false) %}style="display: none" {% endif %}>
+                <a href="{{ path('pages/actions/page', {slug: page.getSlug }) }}">
+                    {{ page.getSlug |  highlight(searchQuery) | raw }}
+                </a>
+            </span>
+            <span class="page-slug action-slug" {% if (page.getIsActive) %}style="display: none" {% endif %}>
+                {{ page.getSlug }}
+            </span>
+
+        </td>
+        <td>{{ page.getCreatedAt|default("-") }}</td>
+        <td>
+            <a href="#"
+               class="btn {% if page.getIsActive %}btn-success{% endif %} btn-xs toggle-active-action toggle-active-page"
+               data-page-id="{{ page.getId }}" data-page-name="{{ page.getName }}"
+               data-page-active="{{ page.getIsActive }}">
+                <span class="toggle-icon toggle-action-icon glyphicon glyphicon-ok "
+                      {% if (page.getIsActive == false) %}style="display: none" {% endif %}></span>
+                <span class="toggle-icon toggle-action-icon glyphicon glyphicon-minus"
+                      {% if (page.getIsActive) %}style="display: none" {% endif %}></span>
+            </a>
+
+        </td>
+        <td>
+            <a href="#" class="btn btn-danger btn-xs remove-page-action remove-page" data-page-id="{{ page.getId }}"
+               data-page-name="{{ page.getName }}"><span class="glyphicon glyphicon-remove"></span></a>
+        </td>
+    </tr>
+
+{% endblock page_list_table_row %}
+
+{% block footer_javascript %}
+    {{ parent() }}
+    <script src="/assets/app/backend/js/page-management.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            new PageManagement('{{path("admin/actions/manage")}}', '{{ token }}', 'actions');
+        });
+    </script>
+
+
+{% endblock footer_javascript %}

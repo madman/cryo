@@ -1,0 +1,15 @@
+{% extends '@Pages/views/Backend/Pages/_edit.twig' %}
+{% block head_edit_page %}
+    <h4 class="panel-title pull-left"
+        style="padding-top: 7.5px;">{% if ( app.request.attributes.get('_route') | slice(-4) == 'edit') %}{{ 'Редактирование страницы'|trans }}{% else %}{{ 'Создание страницы'|trans }}{% endif %}</h4>
+{% endblock head_edit_page %}
+
+{% block footer_javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function () {
+            initRedactor("textarea[id=static_page_content]");
+        });
+    </script>
+
+{% endblock %}

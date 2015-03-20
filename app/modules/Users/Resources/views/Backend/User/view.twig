@@ -1,0 +1,157 @@
+{% extends "@Admin/views/layouts/base.twig" %}
+
+{% block footer_javascript %}
+    {{ parent() }}
+    <script>
+        $(function() {
+            $('.phone_remove').on('click', function() {
+                var href = $(this).attr('href');
+                $.get(href, function( data ) {
+                    if(data.success) {
+                        $('#'+data.phone_id).remove();
+                    } else {
+                        console.log(data);
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            {% block head_edit_page %}
+                <h4 class="panel-title pull-left"
+                    style="padding-top: 7.5px;">{{ 'Просмотр пользователя'|trans }}</h4>
+            {% endblock head_edit_page %}
+
+
+            <div class="btn-group pull-right">
+                <a href="javascript:history.back(-1)" class="btn btn-default btn-sm">← {{ 'Назад'|trans }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+            <div class="col-md-4">
+                <h3>{{ 'Инфо о пользователе'|trans }}</h3>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td style="width: 140px;">ID:</td>
+                        <td>{{ model.getId }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'Email'|trans }}:</td>
+                        <td><strong>{{ model.getUsername }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'Баланс'|trans }}:</td>
+                        <td><strong>{{ balance.getValue / 100 }} {{ model.getCurrency }}</strong></td>
+                    </tr>
+
+                    {% set phones = model.getPhones() %}
+                    {% if phones|length > 0 %}
+                        {% for phone in phones %}
+                            <tr class="phone_holder" id="{{ phone.id }}">
+                                <td>{% if loop.first %}{{ 'Телефон'|trans }}:{% else %}&nbsp;{% endif %}</td>
+                                <td><strong>{{ phone.item }}</strong>
+                                    <a href="{{ path('globotunes/removePhone', {'user_id': model.getId, 'phone_id': phone.id} ) }}" class="btn btn-xs btn-danger pull-right phone_remove"><i class="glyphicon glyphicon-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+
+                <h3>{{ 'Компоинты'|trans }}</h3>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td style="width: 140px;">{{ 'Компоинты'|trans }}:</td>
+                        <td class="compoints">{{ (points.getCompoints) }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'Все компоинты'|trans }}:</td>
+                        <td class="totalCompoints">{{ (points.getTotalCompoints ) }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'Уровень'|trans }}:</td>
+                        <td class="level">{{ level.getName }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'Множитель уровня'|trans }}:</td>
+                        <td class="multiplier">{{ level.getMultiplier|number_format(2, '.', ',') }}</td>
+                    </tr>
+                    <tr>
+                        <td><a class="btn btn-success btn-xs" href="{{ path('admin/compoints/personal/increase', {'user_id': model.getId}) }}"><i class="glyphicon glyphicon-plus"></i> {{ 'Добавить компоинты'|trans }}</a></td>
+                        <td> <a class="btn btn-danger btn-xs" href="{{ path('admin/compoints/personal/decrease', {'user_id': model.getId}) }}"><i class="glyphicon glyphicon-minus"></i> {{ 'Удалить компоинты'|trans }}</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <h3>{{ 'Бонусы'|trans }}</h3>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td style="width: 140px;">{{ 'Всего бонусов'|trans }}:</td>
+                        <td class="bonus">{{ (bonus.getValue/100)|number_format(2, '.', ',')  }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> <a class="btn btn-primary btn-xs" href="{{ path('admin/bonuses/user', {'user_id': model.getId}) }}"><i class="glyphicon glyphicon-gift"></i> {{ 'Управление бонусами'|trans }}</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+            <div class="col-md-8">
+                <h3>{{ 'Персональные коэфициенты'|trans }}
+                    <a href="{{ path('admin/compoints/personal/create',{'user_id': model.getId}) }}" class="btn btn-primary btn-xs pull-right">{{ 'Добавить персональный коэфициент'|trans }}</a></h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>{{ 'Значение'|trans }}</th>
+                        <th>{{ 'Тип'|trans }}</th>
+                        <th>{{ 'Дата'|trans }}</th>
+                        <th></th>
+                    </tr>
+                    {% for item in personal %}
+                        {% set now = "now"|date('Y-m-d H:i:s') %}
+                        <tr {{ item.getStart < now and item.getEnd > now ? 'class="success"' : '' }}>
+                            <td><a href="{{ path('admin/compoints/personal/edit',{'user_id': model.getId, 'id': item.getId }) }}">{{ item.getValue }}</a></td>
+                            <td><span class="label label-warning">{{ item.getType }}</span></td>
+                            <td><a href="{{ path('admin/compoints/personal/edit',{'user_id': model.getId, 'id': item.getId }) }}"><small>{{ item.getStart }} - {{ item.getEnd }}</small></a></td>
+                            <td><a href="{{ path('admin/compoints/personal/delete',{'id': item.getId }) }}" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <h3>{{ 'Лог начисления компоинтов'|trans }}
+                    <a href="{{ path('admin/compoints/personal/log',{'user_id': model.getId}) }}" class="btn btn-primary btn-xs pull-right">{{ 'Просмотр лога за период'|trans }}</a></h3>
+
+                <table class="table table-striped table-bordered table-">
+                    <tr>
+                        <th>{{ 'Дата'|trans }}</th>
+                        <th>{{ 'Причина'|trans }}</th>
+                        <th>{{ 'Сумма'|trans }}</th>
+                        <th>{{ 'Баланс'|trans }}</th>
+                    </tr>
+                {% for item in compoints_log %}
+                    {% set now = "now"|date('Y-m-d H:i:s') %}
+                    <tr class="{{ item.getOperation == 1 ? 'success' : 'warning' }}">
+                        <td><small>{{ item.getCreatedAt.sec|date('Y-m-d H:i:s') }}</small></td>
+                        <td>{% if item.getReason == 'bet' or item.getReason == 'compoints_convert' or item.getReason == 'prize' %}<span class="label label-warning">{{ item.getReason }}</span>{% else %}{{ item.getReason }}{% endif %}</td>
+                        <td><small>{{ (item.getAmount) }}</small></td>
+                        <td><small>{{ item.getBalance }}</small></td>
+                    </tr>
+                {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends '@Pages/views/Backend/Pages/_index.twig' %}
+{% block page_head_title %}{{ 'Все cтатичные страницы'|trans }}{% endblock %}
+
+{################################################}
+
+ {% block page_list_table_head %}
+     {% set n = 'Название'|trans %}
+     {% set ccc = 'Создан'|trans %}
+     {% set s = 'Изменен'|trans %}
+
+     <tr>
+         <th>
+             {{ sortable_table_head(baseUrl, sortBy,  sortOrder, 'name', n) }}
+         </th>
+         <th>{{ 'Slug'|trans }}</th>
+         <th>
+             {{ sortable_table_head(baseUrl, sortBy,  sortOrder, 'created_at', ccc) }}
+         </th>
+         <th>
+             {{ sortable_table_head(baseUrl, sortBy,  sortOrder, 'updated_at', s) }}
+         </th>
+     </tr>
+ {% endblock page_list_table_head %}
+
+{################################################}
+
+{% block page_list_table_row %}
+
+    <tr>
+        <td><a href="{{ path('admin/pages/edit', {id: page.getId}) }}">
+                {{ page.getName | highlight(searchQuery) | raw }}
+            </a></td>
+        <td>
+            {% if page.getIsActive %}
+                <a href="{{ path('pages/static/page', {slug: page.getSlug }) }}">
+                    {{ page.getSlug |  highlight(searchQuery) | raw }}
+                </a>
+            {% else %}
+                {{ page.getSlug }}
+            {% endif %}
+        </td>
+        <td>{{ (page.getCreatedAt) ? page.getCreatedAt : '-' }} </td>
+        <td>{{ (page.getUpdatedAt) ? page.getUpdatedAt : '-' }} </td>
+    </tr>
+{% endblock page_list_table_row %}

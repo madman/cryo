@@ -1,0 +1,20 @@
+routes:
+  "\\Pages\\Controller\\Frontend\\StaticPagesController":
+    options:
+      prefix: ''
+      module: 'pages/static'
+    page: "/info/{slug}"
+
+  "\\Pages\\Controller\\Frontend\\ActionsController":
+    options:
+      prefix: ''
+      module: 'pages/actions'
+    index: "/actions"
+    page: "/actions/{slug}"
+
+  "\\Pages\\Controller\\Frontend\\NewsController":
+    options:
+      prefix: ''
+      module: 'pages/news'
+    index: "/news"
+    page: "/news/{slug}"

@@ -1,0 +1,24 @@
+{% extends '@Pages/views/Backend/Pages/_edit.twig' %}
+{% block stylesheet %}
+    {{ parent() }}
+    <link href="/assets/services/datetimepicker/css/jquery.datetimepicker.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block head_edit_page %}
+    <h4 class="panel-title pull-left"
+        style="padding-top: 7.5px;">{% if ( app.request.attributes.get('_route') | slice(-4) == 'edit') %}{{ 'Редактирование акции'|trans }}{% else %}{{ 'Создание акции'|trans }}{% endif %}</h4>
+{% endblock head_edit_page %}
+
+{% block footer_javascript %}
+    {{ parent() }}
+    <script src="/assets/services/datetimepicker/js/jquery.datetimepicker.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            initRedactor("textarea[id=action_short_content]");
+            initRedactor("textarea[id=action_content]");
+            $("#action_created_at").datetimepicker({format: "Y-m-d H:i"});
+        });
+    </script>
+
+{% endblock %}
