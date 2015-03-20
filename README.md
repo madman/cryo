@@ -1,2 +1,2 @@
 # cryo
-Menegment system for cryostorage
+Managment system for cryostorage
