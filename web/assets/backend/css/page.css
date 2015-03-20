@@ -1,0 +1,17 @@
+.pages-page .caret.caret-reversed {
+    border-top-width: 0;
+    border-bottom: 4px solid;
+}
+
+.pages-page .pagination{
+    margin-bottom: 8px;
+    margin-left: 10px;
+}
+
+.pages-page #search-form-container .search-form {
+    padding-right: 40px;
+}
+
+.pages-page .search-highlight {
+    background: #ffff00;
+}
