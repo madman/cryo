@@ -1,0 +1,22 @@
+debug: true
+timezone: "Europe/Moscow"
+locale: ru
+
+mongo:
+    default:
+      server: 'mongodb://localhost:27017'
+      db: 'cryo'
+
+modules:
+    exclude: []
+    paths: ["app/modules"]
+
+twig:
+    # You can place app views into app/views/themes/$name
+    # directory. Notice, main difference between `themes`
+    # and `paths` config sections is that when `theme` enabled,
+    # `paths` will be ignored, so user can receive 404 response
+    # if view does not exists in theme path.
+    # You can find sample layout in themes directory.
+    # theme: sample_theme
+    paths: ["app/views", "app/modules"]

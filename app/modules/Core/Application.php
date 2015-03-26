@@ -14,8 +14,6 @@ class Application extends Silex\Application
     use Silex\Application\MonologTrait;
     use Silex\Application\UrlGeneratorTrait;
     use Silex\Application\SecurityTrait;
-    use Users\Traits\CurrentUserTrait;
-    use TranslatorTrait;
 
     public function initialize()
     {
@@ -26,7 +24,7 @@ class Application extends Silex\Application
         $this->initLogging();
         $this->initErrorHandling();
         $this->initCaching();
-        $this->initRedis();
+        //$this->initRedis();
         $this->initMongo();
         $this->initLocale();
         $this->initSession();
@@ -136,24 +134,24 @@ class Application extends Silex\Application
     protected function initProviders()
     {
         $this->register(new Provider\SecurityProvider);
-        $this->register(new Provider\IpAccessLimiterProvider);
+        //$this->register(new Provider\IpAccessLimiterProvider);
         $this->register(new Silex\Provider\UrlGeneratorServiceProvider);
         $this->register(new Silex\Provider\FormServiceProvider);
-        $this->register(new Silex\Provider\TranslationServiceProvider);
+        //$this->register(new Silex\Provider\TranslationServiceProvider);
         $this->register(new Silex\Provider\ValidatorServiceProvider);
         $this->register(new Silex\Provider\ServiceControllerServiceProvider);
-        $this->register(new Provider\SentryProvider);
-        $this->register(new Provider\SettingsStorageProvider);
-        $this->register(new Provider\BlocksStorageProvider);
+        //$this->register(new Provider\SentryProvider);
+        //$this->register(new Provider\SettingsStorageProvider);
+        //$this->register(new Provider\BlocksStorageProvider);
         $this->register(new Provider\RouterProvider);
         $this->register(new Provider\TwigProvider);
-        $this->register(new Provider\DeviceDetectorProvider);
-        $this->register(new Provider\CurrenciesProvider);
-        $this->register(new Provider\QueryStringService);
-        $this->register(new Provider\FileSystemProvider);
-        $this->register(new Provider\GlobotunesTransportServiceProvider);
-        $this->register(new \L10n\Provider\L10nServiceProvider);
-        $this->register(new \Rest\Provider\ApplicationServiceProvider);
+        //$this->register(new Provider\DeviceDetectorProvider);
+        //$this->register(new Provider\CurrenciesProvider);
+        //$this->register(new Provider\QueryStringService);
+        //$this->register(new Provider\FileSystemProvider);
+        //$this->register(new Provider\GlobotunesTransportServiceProvider);
+        //$this->register(new \L10n\Provider\L10nServiceProvider);
+        //$this->register(new \Rest\Provider\ApplicationServiceProvider);
 
         // This must be registered last
         $this->register(new Provider\ModulesProvider);

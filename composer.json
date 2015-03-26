@@ -19,6 +19,7 @@
         "symfony/options-resolver": "2.6.3",
         "symfony/security-csrf": "2.6.3",
         "twig/twig": ">=1.8,<2.0-dev",
+        "filp/whoops": "dev-master",
         "monolog/monolog": ">=1.0.0",
         "ebidtech/collection": "@stable"
     },

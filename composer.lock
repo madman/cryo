@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9cd37605b2fcd3b7722f576bf1d08c15",
+    "hash": "3a7a13f225d45f1201915d9f6d479e49",
     "packages": [
         {
             "name": "ebidtech/collection",
@@ -53,6 +53,64 @@
                 "trait"
             ],
             "time": "2014-02-01 11:37:15"
+        },
+        {
+            "name": "filp/whoops",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filp/whoops.git",
+                "reference": "e836694368c7e66391bba5da9ea14900275aa132"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/e836694368c7e66391bba5da9ea14900275aa132",
+                "reference": "e836694368c7e66391bba5da9ea14900275aa132",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Whoops": "src/"
+                },
+                "classmap": [
+                    "src/deprecated"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Filipe Dobreira",
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php error handling for cool kids",
+            "homepage": "https://github.com/filp/whoops",
+            "keywords": [
+                "error",
+                "exception",
+                "handling",
+                "library",
+                "silex-provider",
+                "whoops",
+                "zf2"
+            ],
+            "time": "2015-03-15 11:28:26"
         },
         {
             "name": "monolog/monolog",
@@ -1921,12 +1979,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkExtension.git",
-                "reference": "a448b617c6cc69260eaba248705a4cf2eb0208db"
+                "reference": "9bff0ae65f32f9bf9df0afef91057a7bfeeeafc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/a448b617c6cc69260eaba248705a4cf2eb0208db",
-                "reference": "a448b617c6cc69260eaba248705a4cf2eb0208db",
+                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/9bff0ae65f32f9bf9df0afef91057a7bfeeeafc6",
+                "reference": "9bff0ae65f32f9bf9df0afef91057a7bfeeeafc6",
                 "shasum": ""
             },
             "require": {
@@ -1972,7 +2030,7 @@
                 "test",
                 "web"
             ],
-            "time": "2015-03-10 09:04:42"
+            "time": "2015-03-25 17:21:25"
         },
         {
             "name": "behat/mink-goutte-driver",
@@ -3606,6 +3664,7 @@
         "symfony/finder": 20,
         "symfony/form": 20,
         "symfony/validator": 20,
+        "filp/whoops": 20,
         "ebidtech/collection": 0,
         "phpspec/phpspec": 20,
         "phpspec/nyan-formatters": 20,
