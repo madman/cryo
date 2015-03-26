@@ -15,10 +15,10 @@ class Module implements ModuleInterface
         $this->app = $app;
         $app->router->addRoutes(__DIR__ . '/Resources/config/backend_routes.yml');
         $app->router->addRoutes(__DIR__ . '/Resources/config/frontend_routes.yml');
-        $this->registerProviders();
-        $this->registerEvents();
-        $this->registerUserSettings();
-        $this->registerRest();
+        //$this->registerProviders();
+        //$this->registerEvents();
+        //$this->registerUserSettings();
+        //$this->registerRest();
     }
 
     protected function registerProviders()

@@ -1,0 +1,6 @@
+prefix: ""
+module: "startpage"
+
+routes:
+    "Startpage\\Controller\\Frontend\\IndexController":
+        index: "/"
