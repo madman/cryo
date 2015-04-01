@@ -9,14 +9,13 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\MongoDbSessionHandl
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Monolog\Logger;
 
-class Application extends Silex\Application
-{
+class Application extends Silex\Application {
+
     use Silex\Application\MonologTrait;
     use Silex\Application\UrlGeneratorTrait;
     use Silex\Application\SecurityTrait;
 
-    public function initialize()
-    {
+    public function initialize() {
         ApplicationRegistry::set($this);
 
         $this->initEnvironment();
@@ -24,21 +23,18 @@ class Application extends Silex\Application
         $this->initLogging();
         $this->initErrorHandling();
         $this->initCaching();
-        //$this->initRedis();
-        $this->initMongo();
+        $this->initDb();
         $this->initLocale();
         $this->initSession();
         $this->initProviders();
         $this->initDebugToolbar();
     }
 
-    protected function initEnvironment()
-    {
+    protected function initEnvironment() {
         $this->register(new Provider\EnvironmentDetectorProvider);
     }
 
-    protected function initConfig()
-    {
+    protected function initConfig() {
         $this->register(new Provider\ConfigProvider(CORE_CONFIG_DIR . '/config.yml'));
 
         $envConfig = CORE_CONFIG_DIR . '/' . $this['env']->getEnvironment() . '.yml';
@@ -50,14 +46,12 @@ class Application extends Silex\Application
         date_default_timezone_set($this['config']->get('timezone'));
     }
 
-    protected function initErrorHandling()
-    {
+    protected function initErrorHandling() {
         $this['debug'] = $this['config']->get('debug');
         $this->register(new Provider\ErrorHandlerProvider());
     }
 
-    protected function initLogging()
-    {
+    protected function initLogging() {
         $this->register(new Silex\Provider\MonologServiceProvider(), [
             'monolog.logfile' => CORE_RUNTIME_DIR . '/logs/' . $this['env']->getEnvironment() . '.log',
         ]);
@@ -71,8 +65,7 @@ class Application extends Silex\Application
         };
     }
 
-    protected function initCaching()
-    {
+    protected function initCaching() {
         $this['cache'] = $this->share(function () {
             $memcached = new \Memcached;
 
@@ -91,84 +84,45 @@ class Application extends Silex\Application
         });
     }
 
-    protected function initRedis()
-    {
-        if (is_array($this['config']->get('redis'))) {
-            $config = [
-                'predis.parameters' => $this['config']->get('redis/dsn'),
-                'predis.options'    => $this['config']->get('redis/options')
-            ];
-        } else {
-            $config = [
-                'predis.parameters' => $this['config']->get('redis'),
-                'predis.options'    => ['profile' => '2.8']
-            ];
-        }
-
-        $this->register(new \Predis\Silex\ClientServiceProvider, $config);
+    protected function initDb() {
+        $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+            'db.options' => array(
+                'driver' => 'pdo_sqlite',
+                'path' => CORE_RUNTIME_DIR . '/data/cryo.db',
+            ),
+        ));
     }
 
-    protected function initMongo()
-    {
-        $this->register(new Provider\MongoProvider($this->config->get('mongo')));
-    }
-
-    protected function initLocale()
-    {
+    protected function initLocale() {
         $this['locale'] = $this->config->get('locale');
     }
 
-    public function initSession()
-    {
+    public function initSession() {
         $this->register(new Silex\Provider\SessionServiceProvider);
-        $this['session.storage.handler'] = $this->share(function () {
-            $mongo = $this['mongo.client.default'];
-
-            return new MongoDbSessionHandler($mongo, [
-                'database'   => $this->config->get('mongo/default/db'),
-                'collection' => 'session'
-            ]);
-        });
     }
 
-    protected function initProviders()
-    {
+    protected function initProviders() {
         $this->register(new Provider\SecurityProvider);
-        //$this->register(new Provider\IpAccessLimiterProvider);
         $this->register(new Silex\Provider\UrlGeneratorServiceProvider);
         $this->register(new Silex\Provider\FormServiceProvider);
-        //$this->register(new Silex\Provider\TranslationServiceProvider);
         $this->register(new Silex\Provider\ValidatorServiceProvider);
         $this->register(new Silex\Provider\ServiceControllerServiceProvider);
-        //$this->register(new Provider\SentryProvider);
-        //$this->register(new Provider\SettingsStorageProvider);
-        //$this->register(new Provider\BlocksStorageProvider);
         $this->register(new Provider\RouterProvider);
         $this->register(new Provider\TwigProvider);
-        //$this->register(new Provider\DeviceDetectorProvider);
-        //$this->register(new Provider\CurrenciesProvider);
-        //$this->register(new Provider\QueryStringService);
-        //$this->register(new Provider\FileSystemProvider);
-        //$this->register(new Provider\GlobotunesTransportServiceProvider);
-        //$this->register(new \L10n\Provider\L10nServiceProvider);
-        //$this->register(new \Rest\Provider\ApplicationServiceProvider);
-
-        // This must be registered last
+        
         $this->register(new Provider\ModulesProvider);
     }
 
-    protected function initDebugToolbar()
-    {
+    protected function initDebugToolbar() {
         if ($this['debug']) {
             // Register the Silex/Symfony web debug toolbar.
             $this->register(new Silex\Provider\WebProfilerServiceProvider, array(
-                'profiler.cache_dir'    => CORE_RUNTIME_DIR . '/profiler',
+                'profiler.cache_dir' => CORE_RUNTIME_DIR . '/profiler',
                 'profiler.mount_prefix' => '/_profiler', // this is the default
             ));
 
             $this['twig.loader.filesystem']->addPath(
-                CORE_ROOT_DIR . '/vendor/symfony/web-profiler-bundle/Symfony/Bundle/WebProfilerBundle/Resources/views',
-                'WebProfiler'
+                    CORE_ROOT_DIR . '/vendor/symfony/web-profiler-bundle/Symfony/Bundle/WebProfilerBundle/Resources/views', 'WebProfiler'
             );
         }
     }
@@ -176,8 +130,7 @@ class Application extends Silex\Application
     /**
      * Make event dispatcher access easier
      */
-    public function dispatch($eventName, $sender, $data = [])
-    {
+    public function dispatch($eventName, $sender, $data = []) {
         $event = new GenericEvent($sender, $data);
         $this['dispatcher']->dispatch($eventName, $event);
 
@@ -188,12 +141,12 @@ class Application extends Silex\Application
      * Allows to access services as properties.
      * e.g: $app->settings instead of $app['settings']
      */
-    public function __get($var)
-    {
+    public function __get($var) {
         if (isset($this[$var])) {
             return $this[$var];
         }
 
         return $this->$var;
     }
+
 }

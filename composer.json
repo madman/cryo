@@ -2,8 +2,6 @@
     "name": "madman/cryo",
     "require": {
         "php": ">=5.4",
-        "ext-mcrypt": "*",
-        "ext-mongo": "*",
         "silex/silex": "1.2.x-dev",
         "silex/web-profiler": "~1.0",
         "symfony/yaml": "2.6.3",
@@ -21,7 +19,7 @@
         "twig/twig": ">=1.8,<2.0-dev",
         "filp/whoops": "dev-master",
         "monolog/monolog": ">=1.0.0",
-        "ebidtech/collection": "@stable"
+        "doctrine/dbal": "2.5.1"
     },
     "require-dev": {
         "phpspec/phpspec": "2.0.*@dev",
