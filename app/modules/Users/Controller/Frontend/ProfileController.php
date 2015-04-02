@@ -48,4 +48,13 @@ class ProfileController extends Controller
             ]
         );
     }
+
+    public function actionList()
+    {
+
+        $sql = "SELECT * FROM users";
+        $users = $this->app['db']->fetchAll($sql);
+
+        return $this->render('list', ['users'       => $users]);
+    }
 }

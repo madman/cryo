@@ -4,16 +4,9 @@ module: "users"
 routes:
     "Users\\Controller\\Frontend\\RegisterController":
         register: "/register"
-        registerJson: "/register.json"
     "Users\\Controller\\Frontend\\LoginController":
         login: "/login"
         secured: "/secured"
-    "Users\\Controller\\Frontend\\RemindController":
-        remind: "/remind"
-        enterNewPassword: "/remind/{code}"
     "Users\\Controller\\Frontend\\ProfileController":
-        profile: "/profile"
-    "Users\\Controller\\Frontend\\SubscriptionsController":
-        subscriptions: "/subscriptions"
-    "Users\\Controller\\Frontend\\PhoneVerifyController":
-        phone: "/phone"
+        view: "/view/{id}"
+        list: "/list"

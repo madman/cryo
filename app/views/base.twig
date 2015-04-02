@@ -1,15 +1,11 @@
 <html>
     <head>
         {% block favicon%}
-             <link rel='shortcut icon' href="/uploads/favicon.ico?{{ file_version('favicon.ico') }}" type='image/x-icon'>
+             <link rel='shortcut icon' href="/uploads/favicon.ico" type='image/x-icon'>
         {% endblock %}
 
         {% block stylesheet %}
             <link rel="stylesheet" href="/assets/app/frontend/css/all.min.css?#TIMESTAMP#"/>
-        {% endblock %}
-        {% block header_javascript %}
-            <script src="/assets/app/frontend/js/all.js?#TIMESTAMP#"></script>
-            <script async src="https://cdn.globologin.com/js/globologin-light.js"></script>
         {% endblock %}
 
         <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -18,122 +14,13 @@
         {%  block title %}{% endblock %}
         {%  block description %}{% endblock %}
         {%  block keywords %}{% endblock %}
-
-        <script>
-            (function () {
-
-                createSock();
-
-                function createSock() {
-
-                    var port = 9190;
-                    var sock = new SockJS(window.location.protocol + '//' + window.location.host + ':' + port + '/sock');
-
-                    sock.onopen = function () {
-                        console.log('Connected to socket');
-
-                        {% if app.currentUser() %}
-                        sock.send(JSON.stringify({
-                            type: 'register',
-                            user: '{{ app.currentUser().getSecretHash() }}'
-                        }));
-                        {% endif %}
-                    };
-
-                    sock.onclose = function () {
-                        console.log('Connection closed');
-                        setTimeout(function () {
-                            console.log('Reconnect to socket');
-                            createSock();
-                        }, 5000);
-                    };
-
-                    sock.onmessage = function (e) {
-                        console.log(e.data);
-                    };
-                }
-            }());
-
-        </script>
     </head>
     <body>
-        {% if is_granted('ROLE_USER') %}
-            {% set level = get_level() %}
-            <div style="width: 200px; display: inline-block; margin: 0 7px">
-                <div class="level_name progress_title">{{ level.getName }}</div>
-                <div class="progress_content">
-                    <div class="raiting content sublevel">
-                        {{ get_sublevel_stars()|raw }}
-                    </div>
-                </div>
-                <div class="progress_bar blue">
-                    <span class="progress_line" style="width:{{ next_level_progress() }}%"></span>
-                </div>
-            </div>
-            <div style="width: 200px; display: inline-block; margin: 0 7px;">
-                <div class="progress_title"><a href="{{ path('compoints/index') }}">{{ 'Compoints'|trans }}</a></div>
-                <div class="level_compoints progress_content">{{ get_compoints() }}</div>
-
-                <div class="progress_bar red">
-                    <span class="progress_line" style="width:{{ next_compoint_progress() }}%"></span>
-                </div>
-            </div>
-
-            <div class="factor">
-                <div class="small" style="display: inline-block">x</div>
-                <div style="display: inline-block" class="level_multiplier">{{ get_multiplier() }}</div>
-            </div>
-
-            <div style="width: 100px; display: inline-block; margin: 0 7px;">
-                <div class="title">{{ 'Баланс'|trans }}</div>
-                <div class="money_info">{{ app.currentUser.getCurrency }} <span id="user_balance"> {{ app['user.balance'].getValue / 100 }}</span></div>
-            </div>
-
-            <div style="width: 100px; display: inline-block; margin: 0 7px;">
-                <div class="title">{{ 'Бонус'|trans }}</div>
-                <div class="money_info">{{ app.currentUser.getCurrency }} <span id="user_balance"> {{ app['user.bonus.balance'].getValue }}</span></div>
-            </div>
-
-            <div style="width: 200px; display: inline-block; margin: 0 7px;">
-                {{ 'Привет'|trans }}, {{ app.user.getUsername }}<br>
-                <a href="{{ path('users_logout') }}">{{ 'Logout'|trans }}</a>
-            </div>
-
-        {% else %}
-            <a href="{{ path('users/login') }}">{{ 'Login'|trans }}</a> /
-            <a href="{{ path('users/register') }}">{{ 'Register'|trans }}</a> /
-            <a href="{{ path('users/remind') }}">{{ 'Remind password'|trans }}</a>
-        {% endif %}
-
-        <hr>
-
-        <div style="padding:5px;">
-            <h3>{{ 'Select category'|trans }}</h3>
-            {% for category in game_categories() %}
-                <a href="{{ path('games/category/index', {'slug': category.getSlug}) }}">{{ category.getTitle }}</a>
-            {% endfor %}
-        </div>
-
-        <br>
         {% block content %}{% endblock %}
         {% block footer_javascript %}
             <script>
-                App.addFragment('bonus_balance_listener', true, function (context, events) {
-                    $(function() {
-                        events.on('websocket.bonus_balance.current', function (data) {
-                            console.log('bonus_balance:current \n value:'
-                                + data.value + '\n sum_wagering:' + data.sum_wagering);
-                        });
-                        events.on('websocket.bonus_balance.changed', function (data) {
-                            console.log('bonus_balance:changed \n value:'
-                                + data.value + '\n sum_wagering:' + data.sum_wagering);
-                        });
-                    });
-                });
-                App.setContext({{ js_context() }});
-                App.runMandatory();
+                console.log('init');
             </script>
         {% endblock %}
     </body>
-
 </html>
