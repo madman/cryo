@@ -9,13 +9,15 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\MongoDbSessionHandl
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Monolog\Logger;
 
-class Application extends Silex\Application {
+class Application extends Silex\Application
+{
 
     use Silex\Application\MonologTrait;
     use Silex\Application\UrlGeneratorTrait;
     use Silex\Application\SecurityTrait;
 
-    public function initialize() {
+    public function initialize()
+    {
         ApplicationRegistry::set($this);
 
         $this->initEnvironment();
@@ -30,11 +32,13 @@ class Application extends Silex\Application {
         $this->initDebugToolbar();
     }
 
-    protected function initEnvironment() {
+    protected function initEnvironment()
+    {
         $this->register(new Provider\EnvironmentDetectorProvider);
     }
 
-    protected function initConfig() {
+    protected function initConfig()
+    {
         $this->register(new Provider\ConfigProvider(CORE_CONFIG_DIR . '/config.yml'));
 
         $envConfig = CORE_CONFIG_DIR . '/' . $this['env']->getEnvironment() . '.yml';
@@ -46,15 +50,20 @@ class Application extends Silex\Application {
         date_default_timezone_set($this['config']->get('timezone'));
     }
 
-    protected function initErrorHandling() {
+    protected function initErrorHandling()
+    {
         $this['debug'] = $this['config']->get('debug');
         $this->register(new Provider\ErrorHandlerProvider());
     }
 
-    protected function initLogging() {
-        $this->register(new Silex\Provider\MonologServiceProvider(), [
-            'monolog.logfile' => CORE_RUNTIME_DIR . '/logs/' . $this['env']->getEnvironment() . '.log',
-        ]);
+    protected function initLogging()
+    {
+        $this->register(
+            new Silex\Provider\MonologServiceProvider(),
+            [
+                'monolog.logfile' => CORE_RUNTIME_DIR . '/logs/' . $this['env']->getEnvironment() . '.log',
+            ]
+        );
 
         $this['monolog.level'] = function () {
             if ($level = $this->config->get('monolog/level')) {
@@ -65,43 +74,53 @@ class Application extends Silex\Application {
         };
     }
 
-    protected function initCaching() {
-        $this['cache'] = $this->share(function () {
-            $memcached = new \Memcached;
+    protected function initCaching()
+    {
+        $this['cache'] = $this->share(
+            function () {
+                $memcached = new \Memcached;
 
-            $memcached->setOption(\Memcached::OPT_CONNECT_TIMEOUT, 100); // the timeout after which a server is considered DEAD, ms
-            $memcached->setOption(\Memcached::OPT_DISTRIBUTION, \Memcached::DISTRIBUTION_CONSISTENT); // set it to consistent hashing. If one memcached node is dead, its keys (and only its keys) will be evenly distributed to other nodes. This is where the magic is done. This is really different from removing one server in your ->addServers() call.
-            $memcached->setOption(\Memcached::OPT_REMOVE_FAILED_SERVERS, true); // set it to «true», to enable the removal of dead servers.
-            $memcached->setOption(\Memcached::OPT_RETRY_TIMEOUT, 1); // the timeout after which a server is considered DEAD. As my servers are on the same LAN, ping is ~0.5ms, so 10ms is large enough to consider the server is DEAD. Note that you have to wait twice that time before a node is marked DEAD, so if it's 1000ms, your script will lock for 2 seconds before ignoring the DEAD server. That may affect your response times a lot, and that's why I've set it very low.
+                $memcached->setOption(\Memcached::OPT_CONNECT_TIMEOUT, 100); // the timeout after which a server is considered DEAD, ms
+                $memcached->setOption(\Memcached::OPT_DISTRIBUTION, \Memcached::DISTRIBUTION_CONSISTENT); // set it to consistent hashing. If one memcached node is dead, its keys (and only its keys) will be evenly distributed to other nodes. This is where the magic is done. This is really different from removing one server in your ->addServers() call.
+                $memcached->setOption(\Memcached::OPT_REMOVE_FAILED_SERVERS, true); // set it to «true», to enable the removal of dead servers.
+                $memcached->setOption(\Memcached::OPT_RETRY_TIMEOUT, 1); // the timeout after which a server is considered DEAD. As my servers are on the same LAN, ping is ~0.5ms, so 10ms is large enough to consider the server is DEAD. Note that you have to wait twice that time before a node is marked DEAD, so if it's 1000ms, your script will lock for 2 seconds before ignoring the DEAD server. That may affect your response times a lot, and that's why I've set it very low.
 
-            $memcached->setOption(\Memcached::OPT_PREFIX_KEY, $this['config']->get('memcached/prefix'));
+                $memcached->setOption(\Memcached::OPT_PREFIX_KEY, $this['config']->get('memcached/prefix'));
 
-            foreach ($this['config']->get('memcached/servers') as $server) {
-                $memcached->addServer($server['host'], $server['port']);
+                foreach ($this['config']->get('memcached/servers') as $server) {
+                    $memcached->addServer($server['host'], $server['port']);
+                }
+
+                return $memcached;
             }
-
-            return $memcached;
-        });
+        );
     }
 
-    protected function initDb() {
-        $this->register(new Silex\Provider\DoctrineServiceProvider(), array(
-            'db.options' => array(
-                'driver' => 'pdo_sqlite',
-                'path' => CORE_RUNTIME_DIR . '/data/cryo.db',
-            ),
-        ));
+    protected function initDb()
+    {
+        $this->register(
+            new Silex\Provider\DoctrineServiceProvider(),
+            [
+                'db.options' => [
+                    'driver' => 'pdo_sqlite',
+                    'path' => CORE_RUNTIME_DIR . '/data/cryo.db',
+                ]
+            ]
+        );
     }
 
-    protected function initLocale() {
+    protected function initLocale()
+    {
         $this['locale'] = $this->config->get('locale');
     }
 
-    public function initSession() {
+    public function initSession()
+    {
         $this->register(new Silex\Provider\SessionServiceProvider);
     }
 
-    protected function initProviders() {
+    protected function initProviders()
+    {
         $this->register(new Provider\SecurityProvider);
         $this->register(new Silex\Provider\UrlGeneratorServiceProvider);
         $this->register(new Silex\Provider\FormServiceProvider);
@@ -113,16 +132,21 @@ class Application extends Silex\Application {
         $this->register(new Provider\ModulesProvider);
     }
 
-    protected function initDebugToolbar() {
+    protected function initDebugToolbar()
+    {
         if ($this['debug']) {
             // Register the Silex/Symfony web debug toolbar.
-            $this->register(new Silex\Provider\WebProfilerServiceProvider, array(
-                'profiler.cache_dir' => CORE_RUNTIME_DIR . '/profiler',
-                'profiler.mount_prefix' => '/_profiler', // this is the default
-            ));
+            $this->register(
+                new Silex\Provider\WebProfilerServiceProvider,
+                [
+                    'profiler.cache_dir' => CORE_RUNTIME_DIR . '/profiler',
+                    'profiler.mount_prefix' => '/_profiler', // this is the default
+                ]
+            );
 
             $this['twig.loader.filesystem']->addPath(
-                    CORE_ROOT_DIR . '/vendor/symfony/web-profiler-bundle/Symfony/Bundle/WebProfilerBundle/Resources/views', 'WebProfiler'
+                CORE_ROOT_DIR . '/vendor/symfony/web-profiler-bundle/Symfony/Bundle/WebProfilerBundle/Resources/views',
+                'WebProfiler'
             );
         }
     }
@@ -130,7 +154,8 @@ class Application extends Silex\Application {
     /**
      * Make event dispatcher access easier
      */
-    public function dispatch($eventName, $sender, $data = []) {
+    public function dispatch($eventName, $sender, $data = [])
+    {
         $event = new GenericEvent($sender, $data);
         $this['dispatcher']->dispatch($eventName, $event);
 
@@ -141,12 +166,12 @@ class Application extends Silex\Application {
      * Allows to access services as properties.
      * e.g: $app->settings instead of $app['settings']
      */
-    public function __get($var) {
+    public function __get($var)
+    {
         if (isset($this[$var])) {
             return $this[$var];
         }
 
         return $this->$var;
     }
-
 }
