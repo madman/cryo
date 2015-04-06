@@ -1,17 +1,22 @@
 <?php
 
 namespace Core\Db;
+use Doctrine\DBAL\Connection;
 
 abstract class Mapper
 {
+    /**
+     *
+     * @var Doctrine\DBAL\Connection
+     */
     protected $connection;
 
-    public function __construct($connection)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
-
-    abstract public function find();
-    abstract public function save();
-    abstract public function load($id);
+    
+    protected function getConnection() {
+        return $this->connection;
+    }
 }

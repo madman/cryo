@@ -27,7 +27,7 @@ class UserProvider implements UserProviderInterface
 
         if ($user) {
 
-            return new User($user['username'], $user['password'], 'ROLE_USER');
+            return new User($user['username'], $user['password'], ['ROLE_USER']);
         }
 
         throw new UsernameNotFoundException;

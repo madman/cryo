@@ -31,8 +31,8 @@ abstract class Entity
         return $this->getId() === null;
     }
 
-    abstract public function extarct();
-    abstract public function hydrate();
+    abstract public function extract();
+    abstract public function hydrate($data);
 
     public function __isset($name)
     {
