@@ -11,7 +11,6 @@ use Silex,
 class SecurityProvider implements ServiceProviderInterface {
 
     public function register(Application $app) {
-        //TODO: after db provider
         /*
         $app->register(new Silex\Provider\SecurityServiceProvider(), [
             'security.firewalls' => [
@@ -25,15 +24,13 @@ class SecurityProvider implements ServiceProviderInterface {
                     'logout' => [
                         'logout_path' => '/users/logout',
                     ],
-                    'users' => $app->share(function () {
-                        return new \Users\Provider\UserProvider;
+                    'users' => $app->share(function () use ($app) {
+                        return new \Users\Provider\UserProvider($app['db']);
                     }),
                 ]
-        ]]);
+        ]]); // */
 
-        $app->register(new Silex\Provider\RememberMeServiceProvider);
-         * 
-         */
+        //$app->register(new Silex\Provider\RememberMeServiceProvider);
     }
 
     public function boot(Application $app) {

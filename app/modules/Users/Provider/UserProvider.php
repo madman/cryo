@@ -6,19 +6,28 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Users\Entity\User as CoreUser,
-    Users\Component\User;
+use Users\Component\User;
 
 class UserProvider implements UserProviderInterface
 {
+    /**
+     *
+     * @var \Doctrine\DBAL\Connection
+     */
+    protected $connection;
+    
+    public function __construct(\Doctrine\DBAL\Connection $connection) {
+        $this->connection = $connection;
+    }
+
+
     public function loadUserByUsername($username)
     {
-        $user = CoreUser::manager()->findOne(['email' => $username]);
+        $user = $this->connection->fetchAssoc("SELECT * FROM users where username = :username", ['username' => $username]);
 
         if ($user) {
-            CoreUser::manager()->updateLastActionAt($user);
 
-            return new User($user->getUsername(), $user->getPassword(), $user->getRoles(), true, true, true);
+            return new User($user['username'], $user['password'], 'ROLE_USER');
         }
 
         throw new UsernameNotFoundException;

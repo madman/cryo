@@ -13,3 +13,6 @@ modules:
 
 twig:
     paths: ["app/views", "app/modules"]
+    
+security:
+  password_salt: 'asdhCFn1quyv2qwhCQUweh'
