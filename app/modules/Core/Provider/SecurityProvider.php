@@ -11,11 +11,18 @@ use Silex,
 class SecurityProvider implements ServiceProviderInterface {
 
     public function register(Application $app) {
-        /*
+       //*
         $app->register(new Silex\Provider\SecurityServiceProvider(), [
             'security.firewalls' => [
+                'profiler' => [
+                    'pattern' => '^/_profiler',
+                    'anonymous' => true,
+                ],
+                'login' => array(
+                    'pattern' => '^/users/login$',
+                    'anonymous' => true,
+                ),
                 'default' => [
-                    'pattern' => '^/',
                     'pattern' => '^/',
                     'form' => [
                         'login_path' => '/users/login',

@@ -10,7 +10,7 @@ class LoginController extends Controller
 {
     public function actionLogin()
     {
-        if ($this->app->security->isGranted(\Users\Roles::ROLE_USER)) {
+        if ($this->app->security->isGranted('ROLE_USER')) {
             if ($this->app->request->isXmlHttpRequest()) {
                 return $this->app->json(['redirect' => true]);
             }
@@ -30,7 +30,7 @@ class LoginController extends Controller
     public function actionSecured()
     {
         if ($this->app->security->isGranted(\Users\Roles::ROLE_USER)) {
-            return $this->app->trans('Hello') . ' ' . $this->app->user()->getUsername();
+            return 'Hello ' . $this->app->user()->getUsername();
         } else {
             throw new AccessDeniedException;
         }
