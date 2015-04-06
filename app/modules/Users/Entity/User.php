@@ -12,14 +12,23 @@ use Users\UsersEvents,
 
 class User extends Entity
 {
+    protected $app;
+    
+      public function __construct($data = array()) {
+          parent::__construct($data);
+          
+          $this->app = ApplicationRegistry::get();
+      }
+    
     protected $id = null;
     protected $username;
     protected $password;
     
     public function extract() {
         return [
-            'username' => $username,
-            'password' => $password,
+            'id' => $this->id,
+            'username' => $this->username,
+            'password' => $this->password,
         ];
     }
     public function hydrate($data) {
@@ -39,7 +48,7 @@ class User extends Entity
      */
     public function getSalt()
     {
-        return $this->getApp()->config->get('security/password_salt');
+        return $this->app['config']->get('security/password_salt');
     }
 
     /**
@@ -47,7 +56,7 @@ class User extends Entity
      */
     public function authenticate()
     {
-        $user  = new SymfonyUser($this->getUsername(), $this->getPassword(), ['ROLE_USER']);
+        $user  = new SymfonyUser($this->username, $this->password, ['ROLE_USER']);
         $token = new UsernamePasswordToken($user, $user->getPassword(), 'default', ['ROLE_USER']);
         $this->app->security->setToken($token);
         $this->app->session->set('_security_default', serialize($token));
@@ -64,7 +73,7 @@ class User extends Entity
      */
     public function encodePassword()
     {
-        $encoder        = $this->app['security.encoder_factory']->getEncoder($this);
+        $encoder        = $this->app['security.encoder_factory']->getEncoder(new SymfonyUser($this->username, $this->password, ['ROLE_USER']));
         $this->password = $encoder->encodePassword($this->password, $this->getSalt());
     }
 }
