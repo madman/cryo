@@ -1,12 +1,26 @@
 {% extends "base.twig" %}
 
 {% block content %}
-    <form action="{{ path('users_secured') }}" method="post">
-        <div class="error">{{ error }}</div>
+    <div class="row" style="margin-top:200px;">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form action="{{ path('users_secured') }}" method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
 
-        <label>{{ 'Email' }}: <input type="text" name="_username" value="{{ last_username }}"/></label>
-        <label>{{ 'Пароль' }}: <input type="password" name="_password" value=""/></label>
+                <div class="form-group">
+                    <label>{{ "Ім'я користувача" }}:</label>
+                    <input type="text" name="_username" value="{{ last_username }}" class="form-control"/>
+                </div>
 
-        <input type="submit" value="{{ 'Войти' }}"/>
-    </form>
+                <div class="form-group">
+                    <label>{{ 'Пароль' }}: </label>
+                    <input type="password" name="_password" class="form-control"/>
+                </div>
+                <input type="submit" value="{{ 'Войти' }}" class="btn btn-primary"/>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
 {% endblock %}
