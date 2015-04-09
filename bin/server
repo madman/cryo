@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# Helps to run php built-in server in more comfort way.
+# Run bin/server help for more info.
+
+if [[ "$1" == "help" ]]
+    then
+        echo "Usage:"
+        echo "cd neoproject/"
+        echo "bin/server - to start development server"
+        echo "bin/server production - to start server with production env"
+        echo "bin/server env localhost:8001" - to start with custom env and host/port.
+        echo "bin/server test localhost:8001" - to start with test environment.
+        exit
+fi
+
+echo "Starting PHP server..."
+
+
+if [[ -z "$1" ]]
+    then
+        echo "Use development environmenit"
+        export APP_ENV=development
+    else
+        echo "Use $1 environment"
+        export APP_ENV=$1
+fi
+
+if [[ -z "$2" ]]
+    then
+        HOSTPORT=localhost:8000
+    else
+        HOSTPORT=$2
+fi
+
+
+php -d variables_order=EGPCS -S $HOSTPORT -t web
+

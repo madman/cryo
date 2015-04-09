@@ -1,3 +1,8 @@
 runtime/logs/
 runtime/views/
 runtime/profiler/
+
+bin/phpspec
+bin/behat
+bin/phpunit
+bin/doctrine-dbal
