@@ -1,0 +1,25 @@
+<html>
+    <head>
+        {% block favicon%}
+             <link rel='shortcut icon' href="/uploads/favicon.ico" type='image/x-icon'>
+        {% endblock %}
+
+        {% block stylesheet %}
+            <link rel="stylesheet" href="/assets/css/all.min.css" />
+            <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        {% endblock %}
+
+        
+        <script src="/assets/jquery-2.1.1.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+
+        {%  block title %}{% endblock %}
+        {%  block description %}{% endblock %}
+        {%  block keywords %}{% endblock %}
+    </head>
+    <body>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
