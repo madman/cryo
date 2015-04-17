@@ -6,7 +6,7 @@
 if [[ "$1" == "help" ]]
     then
         echo "Usage:"
-        echo "cd neoproject/"
+        echo "cd project/"
         echo "bin/server - to start development server"
         echo "bin/server production - to start server with production env"
         echo "bin/server env localhost:8001" - to start with custom env and host/port.
