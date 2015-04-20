@@ -5,6 +5,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+use Storage\Entity\Blood;
+
 class BloodForm extends AbstractType
 {
 
@@ -18,8 +20,33 @@ class BloodForm extends AbstractType
             )
             ->add(
                 'gender',
-                'text',
-                ['label' => "Стать"]
+                'choice',
+                [
+                    'label' => "Стать",
+                    'choices' => Blood::genderList(),
+                    'empty_value' => '--Вкажіть стать--',
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'group',
+                'choice',
+                [
+                    'label' => "Група крові",
+                    'choices' => Blood::groupLIst(),
+                    'empty_value' => '--Вкажіть групу крові--',
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'rh',
+                'choice',
+                [
+                    'label' => "Резус",
+                    'choices' => Blood::rhList(),
+                    'empty_value' => '--Вкажіть резус--',
+                    'required' => true,
+                ]
             )
             ->add(
                 'is_check_mother_blood',
@@ -33,7 +60,7 @@ class BloodForm extends AbstractType
             )
             ->add(
                 'viability',
-                'text',
+                'number',
                 ['label' => "Життєздатність, %"]
             )
             ->add(
@@ -43,11 +70,9 @@ class BloodForm extends AbstractType
             )
             ->add(
                 'count',
-                'text',
+                'number',
                 ['label' => "Кількість"]
-            )
-
-            ;
+            );
     }
 
     public function getName()

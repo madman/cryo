@@ -7,11 +7,21 @@ use Core\Db\Entity;
 
 class Blood extends Entity {
     
-    const GENDER_MALE = 'm';
+    const GENDER_MALE   = 'm';
     const GENDER_FAMALE = 'f';
+    
+    const GROUP_1 = 1; //0(I)
+    const GROUP_2 = 2; //A(II) 
+    const GROUP_3 = 3; //B(III)
+    const GROUP_4 = 4; //AB(IV)
+    
+    const RH_MINUS  = 0; // Rh-
+    const RH_PLUS   = 1;  // Rh-
     
     protected $id = null;
     protected $gender;
+    protected $group;
+    protected $rh;
     protected $is_check_mother_blood = false;
     protected $jadk;
     protected $viability;
@@ -22,6 +32,8 @@ class Blood extends Entity {
         return [
             'id' => $this->id,
             'gender' => $this->gender,
+            'group' => $this->group,
+            'rh' => $this->rh,
             'is_check_mother_blood' => $this->is_check_mother_blood,
             'jadk' => $this->jadk,
             'viability' => $this->viability,
@@ -35,6 +47,29 @@ class Blood extends Entity {
                 $this->$property = $value;
             }
         }
+    }
+    
+    public static function genderList() {
+        return [
+            self::GENDER_MALE => 'Чоловіча',
+            self::GENDER_FAMALE => 'Жіноча',
+        ];
+    }
+    
+    public static function groupLIst() {
+        return [
+            self::GROUP_1 => '0(I)',
+            self::GROUP_2 => 'A(II)',
+            self::GROUP_3 => 'B(III)',
+            self::GROUP_4 => 'AB(IV)',
+        ];
+    }
+    
+    public static function rhList() {
+        return [
+            self::RH_MINUS  => 'Rh(-)',
+            self::RH_PLUS   => 'Rh(+)',
+        ];
     }
     
 }
