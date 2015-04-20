@@ -1,0 +1,7 @@
+prefix: "/blood"
+module: "blood"
+
+routes:
+    "Storage\\Controller\\Frontend\\BloodController":
+        create: "/create"
+        edit: "/edit/{id}"

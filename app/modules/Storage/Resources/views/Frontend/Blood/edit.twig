@@ -1,0 +1,14 @@
+{% extends "base.twig" %}
+{% block content %}
+
+    <h1>{{ 'Внесення даних про кров' }}</h1>
+    <form action="" method="post" class="form-horizontal">
+        {{ form_widget(form) }}
+        <div class="form-group">
+
+            <div class="col-lg-1 col-lg-offset-2">
+                <input type="submit" class="btn btn-primary" name="submit" value="{{ 'Зберегти' }}">
+            </div>
+        </div>
+    </form>
+{% endblock %}
