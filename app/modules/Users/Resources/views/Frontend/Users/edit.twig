@@ -1,0 +1,23 @@
+{% extends "base.twig" %}
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="{{ path('users/list') }}">Користувачі</a></li>
+        {% if form.vars.value.id is not null %}
+            <li>Редагування</li>
+        {% else %}
+            <li>Створення</li>
+        {% endif %}
+    </ol>
+
+    <h1>{{ 'Управління користувачем' }}</h1>
+    <form action="" method="post" class="form-horizontal">
+        {{ form_widget(form) }}
+        <div class="form-group">
+
+            <div class="col-lg-1 col-lg-offset-2">
+                <input type="submit" class="btn btn-primary" name="submit" value="{{ 'Зберегти' }}">
+            </div>
+        </div>
+    </form>
+{% endblock %}

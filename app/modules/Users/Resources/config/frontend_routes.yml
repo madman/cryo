@@ -7,6 +7,8 @@ routes:
     "Users\\Controller\\Frontend\\LoginController":
         login: "/login"
         secured: "/secured"
-    "Users\\Controller\\Frontend\\ProfileController":
-        view: "/view/{id}"
+    "Users\\Controller\\Frontend\\UsersController":
+        create: "/create"
+        edit: "/edit/{username}"
         list: "/list"
+        delete: "/delete/{username}"
