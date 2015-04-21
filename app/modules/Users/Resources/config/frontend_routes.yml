@@ -9,6 +9,6 @@ routes:
         secured: "/secured"
     "Users\\Controller\\Frontend\\UsersController":
         create: "/create"
-        edit: "/edit/{username}"
+        edit: "/edit/{id}"
         list: "/list"
-        delete: "/delete/{username}"
+        delete: "/delete/{id}"

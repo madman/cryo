@@ -28,7 +28,7 @@ abstract class Entity
 
     public function isNew()
     {
-        return $this->getId() === null;
+        return is_null($this->getId());
     }
 
     abstract public function extract();

@@ -10,9 +10,9 @@ use Users\Form\UserForm;
 class UsersController extends Controller
 {
 
-    public function actionEdit($username)
+    public function actionEdit($id)
     {
-        return $this->update($this->loadUserOr404($username));
+        return $this->update($this->app['db.users']->findById($id));
     }
 
     public function actionCreate()
@@ -20,12 +20,17 @@ class UsersController extends Controller
         return $this->update(new User);
     }
 
-    public function actionDelete($username)
+    public function actionDelete($id)
     {
-        $user = $this->loadUserOr404($username);
+        $user = $this->app['db.users']->findById($id);
         $this->app['db.users']->remove($user);
 
-        return $this->app->json(['result' => 'success']);
+        $this->app->session->getFlashBag()->add('messages', [
+            'type'    => 'success',
+            'message' => sprintf('Користувача %s видалено', $user->username),
+        ]);
+
+        return $this->redirect($this->app->path('users/list'));
     }
 
     public function actionList()
@@ -43,6 +48,7 @@ class UsersController extends Controller
 
             if ($form->isValid()) {
 
+                $user->encodePassword();
                 $this->app['db.users']->save($user);
 
                 $this->app->session->getFlashBag()->add('messages', [
@@ -57,9 +63,5 @@ class UsersController extends Controller
         return $this->render('edit', [
             'form' => $form->createView()
         ]);
-    }
-
-    protected function loadUserOr404($username) {
-        return  $this->app['db.users']->findByUsername($username);
     }
 }

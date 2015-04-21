@@ -10,10 +10,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for user in users%}
+                {% for user in users %}
                     <tr>
-                        <td><a href="{{ path('users/edit', { username: user.username }) }}">{{ user.username }}<a/></td>
-                        <td><a href="{{ path('users/delete', { username: user.username }) }}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                        <td><a href="{{ path('users/edit', { id: user.id }) }}">{{ user.username }}<a/></td>
+                        <td><a href="{{ path('users/delete', { id: user.id }) }}"><span class="glyphicon glyphicon-remove"></span></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
