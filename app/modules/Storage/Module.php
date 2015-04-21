@@ -17,7 +17,7 @@ class Module implements ModuleInterface {
 
     protected function registerProviders($app) {
         $app['db.bloods'] = $app->share(function () use ($app) {
-            return new BloodMapper($app['db']);
+            return new Entity\BloodMapper($app['db']);
         });
                 
                 

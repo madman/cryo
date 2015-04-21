@@ -5,7 +5,6 @@ namespace Users;
 use Core\Application;
 use Core\Interfaces\ModuleInterface;
 use Admin\Interfaces\AdminMenuManagerInterface;
-use Users\Entity\UserMapper;
 
 class Module implements ModuleInterface {
 
@@ -24,10 +23,8 @@ class Module implements ModuleInterface {
 
         $app['db.users'] = $app->share(
                 function () use ($app) {
-                    return new UserMapper($app['db']);
+                    return new Entity\UserMapper($app['db']);
                 });
-
-        //$this->app->register(new Provider\RegisterFormProvider);
     }
 
     public function registerMenuItems(AdminMenuManagerInterface $manager) {

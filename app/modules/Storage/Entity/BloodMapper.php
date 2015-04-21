@@ -19,4 +19,14 @@ class BloodMapper extends Mapper
     public function findAll() {
         return $this->getConnection()->fetchAll("SELECT * FROM bloods");
     }
+
+    public function save(Blood $blood) {
+        if ($blood->isNew()) {
+            return $this->getConnection()->insert('bloods', $blood->extract());
+        } else {
+            $data = $blood->extract();
+            unset($data['id']);
+            return $this->getConnection()->update('bloods', $data, ['id' => $blood->getId()]);
+        }
+    }
 }

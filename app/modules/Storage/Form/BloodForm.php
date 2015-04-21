@@ -15,8 +15,7 @@ class BloodForm extends AbstractType
         $builder
             ->add(
                 'id',
-                'text',
-                ['label' => "Шифр"]
+                'hidden'
             )
             ->add(
                 'gender',
@@ -29,7 +28,7 @@ class BloodForm extends AbstractType
                 ]
             )
             ->add(
-                'group',
+                'blood_group',
                 'choice',
                 [
                     'label' => "Група крові",
@@ -69,7 +68,7 @@ class BloodForm extends AbstractType
                 ['label' => "Об'єм"]
             )
             ->add(
-                'count',
+                'blood_count',
                 'number',
                 ['label' => "Кількість"]
             );

@@ -20,25 +20,25 @@ class Blood extends Entity {
     
     protected $id = null;
     protected $gender;
-    protected $group;
+    protected $blood_group;
     protected $rh;
     protected $is_check_mother_blood = false;
     protected $jadk;
     protected $viability;
     protected $volume;
-    protected $count = 0;
+    protected $blood_count = 0;
     
     public function extract() {
         return [
             'id' => $this->id,
             'gender' => $this->gender,
-            'group' => $this->group,
+            'blood_group' => $this->blood_group,
             'rh' => $this->rh,
             'is_check_mother_blood' => $this->is_check_mother_blood,
             'jadk' => $this->jadk,
             'viability' => $this->viability,
             'volume' => $this->volume,
-            'count' => $this->count,
+            'blood_count' => $this->blood_count,
         ];
     }
     public function hydrate($data) {

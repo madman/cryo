@@ -3,5 +3,7 @@ module: "blood"
 
 routes:
     "Storage\\Controller\\Frontend\\BloodController":
-        create: "/create"
+        list: ""
+        add: "/add"
         edit: "/edit/{id}"
+        delete: "/delete/{id}"

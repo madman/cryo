@@ -14,9 +14,27 @@ class BloodController extends Controller
         return $this->update($this->app['db.bloods']->findById($id));
     }
 
-    public function actionCreate()
+    public function actionAdd()
     {
         return $this->update(new Blood);
+    }
+
+    public function actionDelete($id)
+    {
+        $blood = $this->app['db.bloods']->findById($id);
+        $this->app['db.bloods']->remove($blood);
+
+        $this->app->session->getFlashBag()->add('messages', [
+            'type'    => 'success',
+            'message' => sprintf('Матераыл №%s видалено', $blood->id),
+        ]);
+
+        return $this->redirect($this->app->path('blood/list'));
+    }
+
+    public function actionList()
+    {
+        return $this->render('list', ['bloods' => $this->app['db.bloods']->findAll()]);
     }
 
     protected function update(Blood $blood)
@@ -36,7 +54,7 @@ class BloodController extends Controller
                     'message' => 'Зміни збережено'
                 ]);
 
-                return $this->redirect($this->app->path('blood/create'));
+                return $this->redirect($this->app->path('blood/list'));
             }
         }
 
