@@ -33,8 +33,8 @@ class Module implements ModuleInterface {
 
     public function registerTwig($app)
     {
-        $app->before(function () {
-            //$this->app->twig->addFunction(new \Games\Twig\GameIsFavoriteFunction);
+        $app->before(function () use ($app) {
+            $app->twig->addExtension(new Twig\Blood());
         });
     }
 }

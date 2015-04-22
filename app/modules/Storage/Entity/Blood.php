@@ -57,7 +57,7 @@ class Blood extends Entity {
         ];
     }
     
-    public static function groupLIst() {
+    public static function groupList() {
         return [
             self::GROUP_1 => '0(I)',
             self::GROUP_2 => 'A(II)',

@@ -37,7 +37,7 @@ class BloodForm extends AbstractType
                 'choice',
                 [
                     'label' => "Група крові",
-                    'choices' => Blood::groupLIst(),
+                    'choices' => Blood::groupList(),
                     'empty_value' => '--Вкажіть групу крові--',
                     'required' => true,
                 ]
