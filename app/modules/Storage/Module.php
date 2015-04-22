@@ -13,7 +13,7 @@ class Module implements ModuleInterface {
     public function initialize(Application $app) {
         $app->router->addRoutes(__DIR__ . '/Resources/config/frontend_routes.yml');
         $this->registerProviders($app);
-        $this->registerTwig();
+        $this->registerTwig($app);
     }
 
     protected function registerProviders($app) {
@@ -31,9 +31,9 @@ class Module implements ModuleInterface {
     public function registerMenuItems(AdminMenuManagerInterface $manager) {
    }
 
-    public function registerTwig()
+    public function registerTwig($app)
     {
-        $this->app->before(function () {
+        $app->before(function () {
             //$this->app->twig->addFunction(new \Games\Twig\GameIsFavoriteFunction);
         });
     }

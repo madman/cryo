@@ -21,11 +21,11 @@ class BloodMapper extends Mapper
     }
 
     public function save(Blood $blood) {
+        $data = $blood->extract();
+        unset($data['id']);
         if ($blood->isNew()) {
-            return $this->getConnection()->insert('bloods', $blood->extract());
+            return $this->getConnection()->insert('bloods', $data);
         } else {
-            $data = $blood->extract();
-            unset($data['id']);
             return $this->getConnection()->update('bloods', $data, ['id' => $blood->getId()]);
         }
     }

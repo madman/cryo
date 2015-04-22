@@ -18,7 +18,7 @@ class Blood extends Entity {
     const RH_MINUS  = 0; // Rh-
     const RH_PLUS   = 1;  // Rh-
     
-    protected $id = null;
+    protected $code;
     protected $gender;
     protected $blood_group;
     protected $rh;
@@ -31,6 +31,7 @@ class Blood extends Entity {
     public function extract() {
         return [
             'id' => $this->id,
+            'code' => $this->code,
             'gender' => $this->gender,
             'blood_group' => $this->blood_group,
             'rh' => $this->rh,

@@ -18,6 +18,11 @@ class BloodForm extends AbstractType
                 'hidden'
             )
             ->add(
+                'code',
+                'number',
+                ['label' => "Шифр"]
+            )
+            ->add(
                 'gender',
                 'choice',
                 [
